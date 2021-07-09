@@ -82,6 +82,19 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+$(".list-group").on("click", "p", function() {
+  var text =$(this) 
+  .text()
+  .trim();
+});
+
+var textInput = $("<textarea>")
+  .addClass("form-control")
+  .val(text);
+
+$(this).replaceWith(textInput);
+textInput.trigger("focus");
+
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
