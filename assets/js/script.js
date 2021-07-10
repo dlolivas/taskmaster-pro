@@ -83,16 +83,19 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function(event, ui) {
-    console.log(ui);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
+  
   },
   deactivate: function(event, ui) {
-    console.log(ui);
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function(event) {
-    console.log(event);
+    $(event.target).addClass("dropover-active");
   },
   out: function(event) {
-    console.log(event);
+    $(event.target).removeClass("dropover-active");
   },
   update: function() {
     var tempArr = [];
@@ -163,7 +166,7 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-save").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -277,6 +280,13 @@ $(".list-group").on("change", "input[type='text']", function() {
     $(this).replaceWith(taskSpan);
     auditTask($(taskSpan).closest(".list-group-item"));
 });
+
+// timer, here we are looping over every task on the page with a class of list-group-item and execute the auditTask() function to check the due date of each one. 
+setInterval(function() {
+  $(".card .list-group-item").each(function(index, el) {
+    auditTask(el);
+  });
+}, (1000 * 60) *30);//we are multiplying 1,000 miliseconds by 60 to convert it to 1 min, then we multiply that minute by 30 so the timer can excute every 30 min
 
 // remove all tasks
 $("#remove-tasks").on("click", function() {
